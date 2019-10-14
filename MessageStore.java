@@ -10,6 +10,7 @@ import com.blogger.rest.model.Message;
 public class MessageStore {
 	
 	static private Map<Integer, Message> messages = new HashMap<Integer, Message>();
+	static int count = 104;
 	
 	static {
 		messages.put(100, new Message(100, "Subject 1", "Description 1 goes here", "vijay", System.currentTimeMillis()));
@@ -24,6 +25,16 @@ public class MessageStore {
 	
 	public Message getMessage(Integer messageId) {
 		return messages.get(messageId);
-	} 
+	}
+	
+	public Integer addMessage(Message message) {
+		Integer messageId = count;
+		count++;
+		message.setMessageId(messageId);
+		message.setCreatedTime(System.currentTimeMillis());
+		messages.put(messageId, message);
+		
+		return messageId;
+	}
 
 }
