@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ErrorStore {
 	
-	static public Map getErrorResponse(Integer status, String message) {
+	static public Map<String, String> getErrorResponse(Integer status, String message) {
 		Map<String, String> resp = new HashMap<String, String>();
 		
 		resp.put("errorCode", String.valueOf(status));
