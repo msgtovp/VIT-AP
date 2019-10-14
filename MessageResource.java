@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -46,6 +48,39 @@ public class MessageResource {
 		Message message = messageStore.getMessage(messageID);
 		if (message != null) {
 			return Response.ok().entity(message).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity(ErrorStore.getErrorResponse(2000, "Message not found")).build();
+		}
+	}
+	
+	@PUT
+	@Path("/messages/{messageId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateMessageById(@PathParam("messageId") Integer messageID, Message messageInp) {
+		Message message = messageStore.getMessage(messageID);
+		if (message != null) {
+			return Response.ok().entity(
+					SuccessStore.getSuccessMessage(
+							messageStore.updateMessage(messageID, messageInp)
+							)
+					).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity(ErrorStore.getErrorResponse(2000, "Message not found")).build();
+		}
+	}
+	
+	@DELETE
+	@Path("/messages/{messageId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteMessageById(@PathParam("messageId") Integer messageID) {
+		Message message = messageStore.getMessage(messageID);
+		if (message != null) {
+			return Response.ok().entity(
+					SuccessStore.getSuccessMessage(
+							messageStore.deleteMessage(messageID)
+							)
+					).build();
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).entity(ErrorStore.getErrorResponse(2000, "Message not found")).build();
 		}
