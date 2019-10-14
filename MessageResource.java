@@ -1,8 +1,12 @@
 package com.blogger.rest.api;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -12,6 +16,7 @@ import javax.ws.rs.core.Response;
 import com.blogger.rest.model.Message;
 import com.blogger.rest.store.ErrorStore;
 import com.blogger.rest.store.MessageStore;
+import com.blogger.rest.store.SuccessStore;
 
 @Path("/")
 public class MessageResource {
@@ -23,6 +28,15 @@ public class MessageResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Message> getAllMessages() {
 		return messageStore.getMessages();
+	}
+	
+	@POST
+	@Path("/messages")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Map<String, String> createMessage(Message message) {
+		Integer messageId = messageStore.addMessage(message);
+		return SuccessStore.getSuccessMessage(messageId);
 	}
 
 	@GET
