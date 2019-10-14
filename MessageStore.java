@@ -36,5 +36,21 @@ public class MessageStore {
 		
 		return messageId;
 	}
+	
+	public Integer updateMessage(Integer messageId, Message messageInp) {
+		Message message = messages.get(messageId);
+		message.setAuthorName(messageInp.getAuthorName());
+		message.setSubjectName(messageInp.getSubjectName());
+		message.setDescription(messageInp.getDescription());
+		
+		messages.put(messageId, message);
+		
+		return messageId;
+	}
+	
+	public Integer deleteMessage(Integer messageId) {
+		messages.remove(messageId);
+		return messageId;
+	}
 
 }
