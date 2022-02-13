@@ -1,0 +1,63 @@
+--------------
+Simple Method
+--------------
+
+sudo apt-get install asterisk
+
+***** goto SIP Extension config further or else go with Source code installation ******
+
+------------
+prerequisite
+------------
+1. wget
+2. build-essential 
+3. subversion
+
+
+--------------------------------
+Download & Install - Source Code
+--------------------------------
+
+sudo wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-<version>.tar.gz
+sudo tar zxf asterisk-<version>.tar.gz
+cd asterisk-<version>/
+sudo contrib/scripts/get_mp3_source.sh
+sudo contrib/scripts/install_prereq install
+sudo ./configure
+
+sudo make menuselect
+sudo make -j2
+sudo make install
+sudo make samples
+sudo make config
+sudo ldconfig
+
+********* Note: Country code prompted in install_prereq install command & audio codec will be prompted in menu select. *************
+
+
+--------------------------
+Start the Asterisk Service
+--------------------------
+sudo systemctl start asterisk
+
+----------------
+Asterisk Console
+----------------
+sudo asterisk -vvvr
+
+---------------------
+Allow SIP port in UDP
+---------------------
+
+sudo ufw allow 5060/udp
+
+
+------------------------
+SIP Extension config
+------------------------
+1. Edit extensions.conf, sip.conf, voicemail.conf
+2. Get into Asterisk Console & execute the command one by one
+    module load chan_sip.so
+    reload
+3. to check the configured extensions execute
+    sip show peers
